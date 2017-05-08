@@ -1,8 +1,8 @@
  
 #ifdef  CS5460A_GLOBALS
-    #define  CS5460A_EXT 
+  #define  CS5460A_EXT 
 #else
-    #define  CS5460A_EXT    extern
+  #define  CS5460A_EXT    extern
 #endif
 
 #ifdef ARDUINO
@@ -35,7 +35,7 @@
 
 #define  CS5460A_RMS_VOLTAGE     0x18
 #define  CS5460A_RMS_CURRENT     0x16
-#define  CS5460A_TRUE_POWER      0x14	
+#define  CS5460A_TRUE_POWER      0x14
 
 
 #define  CS5460A_CFG_READ        0x00  //reg read: config
@@ -62,8 +62,6 @@
 
 #define  CS5460A_START_CONV    0xe8  // start conversion, continuous
 
-
-  
 
 #ifdef __cplusplus
 extern "C" {

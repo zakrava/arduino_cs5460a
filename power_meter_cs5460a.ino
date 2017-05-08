@@ -64,6 +64,6 @@ void loop()
   Serial.print(", power factor: ");
   Serial.print(power_factor, 2);
   
-  Serial.print("\n");
+  Serial.println();
 }
 

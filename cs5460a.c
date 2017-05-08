@@ -65,69 +65,69 @@ void writeCS5460A(uint8_t data)
   uint8_t i;
   //cbi(CS5460A_CS_PORT, CS5460A_CS);
 
-  delayMicroseconds(5);	 
+  delayMicroseconds(5);
   
   for(i = 0; i < 8; i++)
   {
     cbi(CS5460A_SCK_PORT, CS5460A_SCK);
-    delayMicroseconds(5);      																																																																																																																																																																																														
-    
+    delayMicroseconds(5);    
+
     if(data & 0x80) {
       sbi(CS5460A_SDI_PORT, CS5460A_SDI);
     } else {
       cbi(CS5460A_SDI_PORT, CS5460A_SDI);
     }
     
-    delayMicroseconds(5);	   
+    delayMicroseconds(5);
     sbi(CS5460A_SCK_PORT, CS5460A_SCK);
-    delayMicroseconds(15);	         
-		
-		data <<= 1;   
+    delayMicroseconds(15);
+    
+    data <<= 1;   
   } 
   
-	//sbi(CS5460A_CS_PORT, CS5460A_CS);
+  //sbi(CS5460A_CS_PORT, CS5460A_CS);
   delayMicroseconds(2);  
-	
-	return;
+  
+  return;
 }
 
 uint32_t readCS5460A(uint8_t cmdData)
 {
   uint8_t i;
-	volatile uint32_t data = 0;
+  volatile uint32_t data = 0;
  
   writeCS5460A(cmdData); 
-	
-	cbi(CS5460A_SCK_PORT, CS5460A_SCK);
+  
+  cbi(CS5460A_SCK_PORT, CS5460A_SCK);
  
-	delayMicroseconds(5);
+  delayMicroseconds(5);
 
-	for(i = 0; i < 24; i++)        
+  for(i = 0; i < 24; i++)        
   {
-		data <<= 1;
-		sbi(CS5460A_SDI_PORT, CS5460A_SDI);
-		delayMicroseconds(15);
+    data <<= 1;
+    sbi(CS5460A_SDI_PORT, CS5460A_SDI);
+    delayMicroseconds(15);
     cbi(CS5460A_SCK_PORT, CS5460A_SCK);
-		delayMicroseconds(15);
-		sbi(CS5460A_SCK_PORT, CS5460A_SCK);//
-		delayMicroseconds(11);
+    delayMicroseconds(15);
+    sbi(CS5460A_SCK_PORT, CS5460A_SCK);//
+    delayMicroseconds(11);
     
-		if((CS5460A_SDI_PIN & (1 << CS5460A_SDO)) == (1 << CS5460A_SDO))    
-		{
-			data |= 0x01;
-    }
-  }
-	
-	if(cmdData == CS5460A_TRUE_POWER)
-	{
-    if((data & 0x00100000))
-		{
-      data = (~data) + 1; 
-	    data &= 0xffffff;
+    if((CS5460A_SDI_PIN & (1 << CS5460A_SDO)) == (1 << CS5460A_SDO))    
+    {
+      data |= 0x01;
     }
   }
   
-	//sbi(CS5460A_CS_PORT, CS5460A_CS);     
+  if(cmdData == CS5460A_TRUE_POWER)
+  {
+    if((data & 0x00100000))
+    {
+      data = (~data) + 1; 
+      data &= 0xffffff;
+    }
+  }
+  
+  //sbi(CS5460A_CS_PORT, CS5460A_CS);     
   
   return data;
 } 
