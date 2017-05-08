@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "printf.h"
 #include "cs5460a.h"
 
 
