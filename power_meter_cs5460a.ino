@@ -19,6 +19,7 @@ double true_power = 0;
 double apparent_power = 0;
 double power_factor = 0;
 
+uint8_t timeout = 0; 
 
 void setup()
 {
@@ -32,20 +33,30 @@ void setup()
 
 void loop()
 {
-  delay(1000);
-  
+  delay(2500);
+
   uint32_t data = readCS5460A(0x1e);
-  
+
   if(data != 0x9003c1) {
+    timeout++;
+    Serial.println("failed");
+
+    if(timeout > 10) {
+      Serial.println('timeout');
+      configCS5460A();
+      initCS5460A();
+      timeout = 0;
+    }
+
     return;
   }
-  
+
   voltage = readCS5460A(CS5460A_RMS_VOLTAGE) * VOLTAGE_MULTIPLIER;
   current = readCS5460A(CS5460A_RMS_CURRENT) * CURRENT_MULTIPLIER;
-  
+
   true_power = (double) readCS5460A(CS5460A_TRUE_POWER) * POWER_MULTIPLIER;
   apparent_power = voltage * current;
-  
+
   power_factor = true_power / apparent_power;
 
   
